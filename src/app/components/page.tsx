@@ -7,7 +7,7 @@ import ProductPreview from "@/components/tailwindcss/ProductPreview";
 import PromoSection from "@/components/tailwindcss/PromoSection";
 import StoreNavigation from "@/components/tailwindcss/StoreNavigation";
 
-export default function HomePage() {
+export default function ComponentPage() {
     return (
         <>
         <StoreNavigation />
