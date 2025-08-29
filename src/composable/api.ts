@@ -1,9 +1,10 @@
 // lib/useAxios.ts
-import axios, { AxiosInstance } from "axios";
+import { Local_STORAGE_TOKEN_KEY } from "@/utils/constant";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 let axiosInstance: AxiosInstance | null = null;
 
-export default function useApi(): AxiosInstance {
+export default function useApi<T>() {
   if (!axiosInstance) {
     axiosInstance = axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000",
@@ -17,14 +18,17 @@ export default function useApi(): AxiosInstance {
     axiosInstance.interceptors.request.use(
       (config) => {
         if (typeof window !== "undefined") {
-          const token = localStorage.getItem("token");
+          const token = localStorage.getItem(Local_STORAGE_TOKEN_KEY);
           if (token) {
             config.headers.Authorization = `Bearer ${token}`;
           }
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) =>
+      {
+        console.log(error)
+      }
     );
 
     // RESPONSE INTERCEPTOR
@@ -40,5 +44,17 @@ export default function useApi(): AxiosInstance {
     );
   }
 
-  return axiosInstance;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const execute = async <T>(uri: string, method: 'POST' | 'GET', options?: {data: any, config?: AxiosRequestConfig<unknown>}): T =>{
+    
+    if(method === 'POST'){
+      return await axiosInstance?.post(uri, options?.data, options?.config ) as unknown as T
+    }
+    else {
+      return await axiosInstance?.get(uri, options?.config)  as unknown as T
+    }
+
+  }
+
+  return execute;
 }

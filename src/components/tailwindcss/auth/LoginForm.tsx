@@ -1,5 +1,5 @@
 'use client'
-import useApi from "@/composable/api";
+
 import { useAuth } from "@/composable/auth";
 import Link from "next/link";
 

@@ -20,7 +20,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ShoppingCarts from './ShoppingCarts'
 import Link from 'next/link'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
 const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']

@@ -21,7 +21,7 @@ export default function SignupForm() {
     formState: { errors },
     reset
   } = useForm<Inputs>();
-  const axios = useAPi()
+  const api = useAPi()
   const router = useRouter();
   
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -35,7 +35,7 @@ export default function SignupForm() {
         'password': data.password,
         'phone': data.phone
       }
-      await axios.post('/auth', inputData)
+      await api('/auth','POST', inputData)
       toast.success('Signup successfully!')
       setTimeout(()=>{
       reset()},1000)

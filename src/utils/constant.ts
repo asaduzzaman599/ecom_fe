@@ -1,0 +1,1 @@
+export const Local_STORAGE_TOKEN_KEY = 'token'
