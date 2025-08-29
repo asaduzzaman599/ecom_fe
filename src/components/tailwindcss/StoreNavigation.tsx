@@ -18,6 +18,10 @@ import {
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ShoppingCarts from './ShoppingCarts'
+import Link from 'next/link'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '@/store/store'
 
 const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
 const navigation = {
@@ -89,7 +93,7 @@ export default function StoreNavigation() {
   const [open, setOpen] = useState(false)
   
   const [isDrawerOpen, setDrawerOpen] = useState(false)
-  
+   const auth = useSelector((state: RootState) => state.auth)
 
   return (
     <div className="bg-white">
@@ -214,19 +218,19 @@ export default function StoreNavigation() {
                 </div>
               ))}
             </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+              
+            {!auth.user ? <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                <Link href="/registration" className="-m-2 block p-2 font-medium text-gray-900">
                   Create an account
-                </a>
+                </Link>
               </div>
               <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                <Link href="/login" className="-m-2 block p-2 font-medium text-gray-900">
                   Sign in
-                </a>
+                </Link>
               </div>
-            </div>
+            </div>: <button>Logout</button>}
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               {/* Currency selector */}
@@ -260,7 +264,7 @@ export default function StoreNavigation() {
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
               {/* Currency selector */}
               <form className="hidden lg:block lg:flex-1">
-                <div className="-ml-2 inline-grid grid-cols-1">
+               {/*  <div className="-ml-2 inline-grid grid-cols-1">
                   <select
                     id="desktop-currency"
                     name="currency"
@@ -275,22 +279,25 @@ export default function StoreNavigation() {
                     aria-hidden="true"
                     className="pointer-events-none col-start-1 row-start-1 mr-1 size-5 self-center justify-self-end fill-gray-300"
                   />
-                </div>
+                </div> */}
               </form>
 
               <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
                 Get free delivery on orders over $100
               </p>
 
-              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
-                  Create an account
-                </a>
-                <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
-                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
-                  Sign in
-                </a>
-              </div>
+               {auth.user ? 
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  <Link href="/registraion" className="text-sm font-medium text-white hover:text-gray-100">
+                    Create an account
+                  </Link>
+                  <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
+                  <Link href="/login" className="text-sm font-medium text-white hover:text-gray-100">
+                    Sign in
+                  </Link>
+                </div>
+              :
+               null}
             </div>
           </div>
 
