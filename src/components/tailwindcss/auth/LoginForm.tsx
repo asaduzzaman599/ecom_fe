@@ -18,10 +18,14 @@ export default function LoginForm() {
     } = useForm<Inputs>();
     const { login} = useAuth()
     
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      console.log(data)
-       login(data.phone, data.password)
-      reset()
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+      try{
+
+        login(data.phone, data.password)
+        setTimeout(reset,1000)
+      }catch(err){
+        console.log()
+      }
     }
     
   return (

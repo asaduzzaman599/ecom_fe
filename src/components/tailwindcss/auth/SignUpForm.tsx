@@ -26,8 +26,6 @@ export default function SignupForm() {
   
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try{
-
-      console.log(data)
       const inputData = {
         'firstName': data.firstName,
         'lastName': '',
@@ -35,7 +33,7 @@ export default function SignupForm() {
         'password': data.password,
         'phone': data.phone
       }
-      await api('/auth','POST', inputData)
+      await api('/auth','POST', {data: inputData})
       toast.success('Signup successfully!')
       setTimeout(()=>{
       reset()},1000)

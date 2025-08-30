@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -24,6 +24,10 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/store/store'
+import { logout } from '@/store/slice/authSlice'
+import { useRouter } from 'next/navigation'
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -38,10 +42,6 @@ const teams = [
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
-const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -53,6 +53,20 @@ export default function SidebarNavigation({
   children?: React.ReactNode
 }){
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const auth = useSelector((state: RootState)=>state.auth)
+  const dispatch = useDispatch()
+  const router = useRouter()
+
+  
+const userNavigation = useMemo(()=>{
+  return [
+  { name: 'Your profile', action: ()=>{}  },
+  { name: 'Sign out', action: ()=>{
+    dispatch(logout()) 
+    router.push('/')
+  } },
+]
+}, [auth])
 
   return (
     <>
@@ -305,7 +319,7 @@ export default function SidebarNavigation({
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        Tom Cook
+                        {auth?.user?.firstName}
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>
@@ -316,12 +330,12 @@ export default function SidebarNavigation({
                   >
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>
-                        <a
-                          href={item.href}
-                          className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
+                        <button
+                         onClick={item?.action}
+                          className="w-full text-left block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
                         >
                           {item.name}
-                        </a>
+                        </button>
                       </MenuItem>
                     ))}
                   </MenuItems>
