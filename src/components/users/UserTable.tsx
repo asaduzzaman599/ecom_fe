@@ -1,9 +1,10 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SimpleDialog from "../tailwindcss/Dialog";
 import Pagination from "../tailwindcss/Pagination";
 import SimpleTable from "../tailwindcss/SimpleTable";
 import UserCreateDialog from "./UserCreateDialog";
+import useApi from "@/composable/api";
 const people = [
   { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
   { name: 'Courtney Henry', title: 'Designer', email: 'courtney.henry@example.com', role: 'Admin' },
@@ -13,14 +14,17 @@ const people = [
   { name: 'Floyd Miles', title: 'Principal Designer', email: 'floyd.miles@example.com', role: 'Member' },
 ]
 export default function UserTable(){
-    
-  const [open, setOpen] = useState(true)
+    const [items,setItems] = useState([])
+    const api = useApi()
 const headers = [
-    {title: 'Name', key: 'name' },
-    {title: 'Title', key: 'title' },
+    {title: 'Name', key: 'firstName' },
+    {title: 'Phone', key: 'phone' },
     {title: 'Email', key: 'email' },
     {title: 'Roles', key: 'role' },
 ]
+    useEffect(()=>{
+        api('/users','GET').then((data)=>setItems(data))
+    },[])
     return (
         <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -35,7 +39,7 @@ const headers = [
         </div>
       </div>
       <div className="mt-8">
-        <SimpleTable headers={headers} items={people} PaginationElement={Pagination} />
+        <SimpleTable headers={headers} items={items} PaginationElement={Pagination} />
         </div></div>
     
     )

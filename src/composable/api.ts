@@ -45,13 +45,13 @@ export default function useApi<T>() {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const execute = async <T>(uri: string, method: 'POST' | 'GET', options?: {data: any, config?: AxiosRequestConfig<unknown>}): T =>{
+  const execute = <T>(uri: string, method: 'POST' | 'GET', options?: {data: any, config?: AxiosRequestConfig<unknown>}): T =>{
     
     if(method === 'POST'){
-      return await axiosInstance?.post(uri, options?.data, options?.config ) as unknown as T
+      return axiosInstance?.post(uri, options?.data, options?.config ) as unknown as T
     }
     else {
-      return await axiosInstance?.get(uri, options?.config)  as unknown as T
+      return axiosInstance?.get(uri, options?.config)  as unknown as T
     }
 
   }
