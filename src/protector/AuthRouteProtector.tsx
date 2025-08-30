@@ -11,7 +11,7 @@ export default function AuthRouteProtector({ children }: { children: React.React
     const auth = useSelector((state: RootState) => state.auth)
     const [loading, setLoading] = useState(true)
     useEffect(()=>{
-        console.log(auth, !loading && auth.user)
+        console.log(auth.loading , auth.user)
         if(!auth.loading && auth.user){
             
         router.push('/')
@@ -27,7 +27,7 @@ export default function AuthRouteProtector({ children }: { children: React.React
         }
     },[auth.loading])
 
-    if(loading || true){
+    if(loading){
         return <Loading />
     }
 

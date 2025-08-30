@@ -1,7 +1,7 @@
 import useApi from "./api"
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from 'react-redux'
-import {save } from '@/store/slice/authSlice'
+import {logout, save } from '@/store/slice/authSlice'
 import { Local_STORAGE_TOKEN_KEY } from "@/utils/constant";
 
 export type User = {
@@ -31,5 +31,13 @@ export function useAuth(){
     }
     }
 
-    return {login}
+    function signOut(){
+      localStorage.removeItem(Local_STORAGE_TOKEN_KEY)
+      dispatch(logout())
+    }
+
+    return {
+      login,
+      signOut
+  }
 }

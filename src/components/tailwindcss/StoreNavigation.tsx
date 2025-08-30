@@ -15,13 +15,14 @@ import {
   TabPanel,
   TabPanels,
 } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ShoppingCarts from './ShoppingCarts'
 import Link from 'next/link'
 
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import DropdownMenu from './DropdownMenu'
 
 const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
 const navigation = {
@@ -261,32 +262,14 @@ export default function StoreNavigation() {
         <nav aria-label="Top">
           {/* Top navigation */}
           <div className="bg-gray-900">
-            <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              {/* Currency selector */}
-              <form className="hidden lg:block lg:flex-1">
-               {/*  <div className="-ml-2 inline-grid grid-cols-1">
-                  <select
-                    id="desktop-currency"
-                    name="currency"
-                    aria-label="Currency"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-900 py-0.5 pl-2 pr-7 text-left text-base font-medium text-white focus:outline focus:outline-2 focus:-outline-offset-1 focus:outline-white sm:text-sm/6"
-                  >
-                    {currencies.map((currency) => (
-                      <option key={currency}>{currency}</option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-1 size-5 self-center justify-self-end fill-gray-300"
-                  />
-                </div> */}
-              </form>
+            <div className={`mx-auto flex h-10 max-w-7xl items-center ${auth.user? 'justify-center': 'justify-between'} px-4 sm:px-6 lg:px-8`}>
+              
 
-              <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
+              <p className="flex-1 text-center text-sm font-medium text-white bg-yellow-600 lg:flex-none">
                 Get free delivery on orders over $100
               </p>
 
-               {auth.user ? 
+               {!auth.user ? 
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   <Link href="/registraion" className="text-sm font-medium text-white hover:text-gray-100">
                     Create an account
@@ -479,13 +462,14 @@ export default function StoreNavigation() {
                           </a>
                         </div>
 
-                        <div className="flex">
-                          <a href="#" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                        {auth.user &&<div className="flex">
+                          <span className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                             <span className="sr-only">Account</span>
-                            <UserIcon aria-hidden="true" className="size-6" />
-                          </a>
-                        </div>
-                      </div>
+                            {/* <UserIcon aria-hidden="true" className="size-6" /> */}
+                            <DropdownMenu />
+                          </span>
+                        </div>}
+                      </div> 
 
                       <span aria-hidden="true" className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" />
 

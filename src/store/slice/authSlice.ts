@@ -14,7 +14,7 @@ export const fetchCurrentUser = createAsyncThunk(
       if(token){
       const res = await api<AuthResponse>("/auth/me", 'GET'); // <- your API endpoint
       console.log(res)
-      return res.user; // must be { id, name, email } etc
+      return res; // must be { id, name, email } etc
       }
     } catch (err) {
       localStorage.removeItem(Local_STORAGE_TOKEN_KEY)
@@ -30,7 +30,7 @@ interface Type {
   loading: boolean
 
 }
-const initialState: Type = { user: null, token: null, loading: false, error: null, status: null }
+const initialState: Type = { user: null, token: null, loading: true, error: null, status: null }
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -38,10 +38,10 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem("token");
     },
   save: (state, action) => {
-    state = {...action.payload}
+    state.user = action.payload.user
+    state.token = action.payload.access_token
     
   },
   },
@@ -54,7 +54,8 @@ const authSlice = createSlice({
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         
-        state.user = action.payload!;
+        state.user = action.payload!.user;
+        state.token = action.payload!.access_token;
         state.loading = false
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
