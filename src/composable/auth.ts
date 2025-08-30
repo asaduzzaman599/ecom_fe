@@ -6,7 +6,7 @@ import { Local_STORAGE_TOKEN_KEY } from "@/utils/constant";
 
 export type User = {
   id: number,
-  firstname: string
+  firstName: string
 }
 
 export interface AuthResponse {
