@@ -13,8 +13,9 @@ interface Props<T> {
     headers: DataTableHeaderType[]
     items: T[]
     PaginationElement?: ()=> React.ReactNode
+    action?: <T>(item: T)=> React.ReactNode
 }
-export default function SimpleTable<T>({headers, items, PaginationElement }: Props<T>) {
+export default function SimpleTable<T>({headers, items, PaginationElement, action }: Props<T>) {
   return (
     
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -45,9 +46,7 @@ export default function SimpleTable<T>({headers, items, PaginationElement }: Pro
                       }
                      
                       <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {item.name}</span>
-                        </a>
+                        {action && action(item)}
                       </td>
                     </tr>
                   ))}

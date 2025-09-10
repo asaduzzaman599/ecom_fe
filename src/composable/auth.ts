@@ -6,7 +6,7 @@ import { Local_STORAGE_TOKEN_KEY } from "@/utils/constant";
 import toast from "react-hot-toast";
 
 export type User = {
-  id: number,
+  id: string,
   firstName: string,
   role: 'Admin' | 'SuperAdmin'
 }

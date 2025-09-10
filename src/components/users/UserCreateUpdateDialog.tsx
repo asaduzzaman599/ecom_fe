@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SimpleDialog from "../tailwindcss/Dialog";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -13,8 +13,11 @@ type Inputs = {
   confirmPassword: string;
 }
 
-type Props = {}
-export default function UserCreateDialog({ }: Props) {
+type Props = {
+  selectedId?: string
+  reload: () => void
+}
+export default function UserCreateDialog({ selectedId, reload }: Props) {
   const [open, setOpen] = useState(false)
   const api = useAPi()
   const {
@@ -22,8 +25,18 @@ export default function UserCreateDialog({ }: Props) {
       handleSubmit,
       watch,
       formState: { errors },
+      setValue,
       reset
     } = useForm<Inputs>();
+
+    useEffect(()=>{
+      if(selectedId && open)
+        api(`/users/${selectedId}`, 'GET').then(data=>{
+      setValue('firstName',data.firstName)
+    setValue('email',data.email)
+  setValue("phone",data.phone)
+  })
+    },[open])
 
     
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -32,11 +45,18 @@ export default function UserCreateDialog({ }: Props) {
         'firstName': data.firstName,
         'lastName': '',
         'email': data.email,
-        'password': data.phone,
         'phone': data.phone,
-        'role': "Admin"
+        ...(!selectedId ? 
+          { 'password': data.phone,
+            'role': "Admin"
+          } : data.password? { password: data.password }: null)
       }
-      await api('/auth/register-admin','POST', {data: inputData})
+      if(!selectedId)
+        await api('/auth/register-admin','POST', {data: inputData})
+      else
+        await api(`/users/${selectedId}`,'PATCH', {data: inputData})
+
+      reload()
       toast.success('Signup successfully!')
       setTimeout(()=>{
       reset()
@@ -47,13 +67,18 @@ export default function UserCreateDialog({ }: Props) {
     }
   }
 
-  return (<SimpleDialog activator={() => (<button
+  return (<SimpleDialog activator={() => (!selectedId ? <button
     onClick={() => setOpen(true)}
     type="button"
     className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
   >
     Add user
-  </button>)}
+  </button>
+  : <button 
+    onClick={() => setOpen(true)}
+     className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
+                          Edit
+                        </button>)}
     open={open}
     setOpen={setOpen}
     title='Create Admin'
@@ -94,6 +119,18 @@ export default function UserCreateDialog({ }: Props) {
                   />
                 </div>
               </div>
+
+               {selectedId && <div>
+                <div className="mt-2">
+                  <input
+                    id="password"
+                        {...register("password", { required: true })}
+                    autoComplete="password"
+                    placeholder="Enter Updated Password"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  />
+                </div>
+              </div>}
 
               
     

@@ -28,10 +28,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import { logout } from '@/store/slice/authSlice'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
+  { name: 'Users', href: '/users', icon: UsersIcon, current: true },
+  { name: 'Team', href: '#', icon: HomeIcon, current: false },
   { name: 'Projects', href: '#', icon: FolderIcon, current: false },
   { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
@@ -141,8 +142,8 @@ const userNavigation = useMemo(()=>{
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
                         {teams.map((team) => (
                           <li key={team.name}>
-                            <a
-                              href={team.href}
+                            <Link
+                              href={`/dashboard/${team.href}`}
                               className={classNames(
                                 team.current
                                   ? 'bg-gray-50 text-indigo-600'
@@ -161,7 +162,7 @@ const userNavigation = useMemo(()=>{
                                 {team.initial}
                               </span>
                               <span className="truncate">{team.name}</span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -202,8 +203,8 @@ const userNavigation = useMemo(()=>{
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <Link
+                          href={`/dashboard/${item.href}`}
                           className={classNames(
                             item.current
                               ? 'bg-gray-50 text-indigo-600'
@@ -219,7 +220,7 @@ const userNavigation = useMemo(()=>{
                             )}
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -229,8 +230,8 @@ const userNavigation = useMemo(()=>{
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
-                        <a
-                          href={team.href}
+                        <Link
+                          href={`/dashboard/${team.href}`}
                           className={classNames(
                             team.current
                               ? 'bg-gray-50 text-indigo-600'
@@ -249,7 +250,7 @@ const userNavigation = useMemo(()=>{
                             {team.initial}
                           </span>
                           <span className="truncate">{team.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>

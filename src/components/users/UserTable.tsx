@@ -1,10 +1,11 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SimpleDialog from "../tailwindcss/Dialog";
 import Pagination from "../tailwindcss/Pagination";
 import SimpleTable from "../tailwindcss/SimpleTable";
-import UserCreateDialog from "./UserCreateDialog";
+import UserCreateDialog from "./UserCreateUpdateDialog";
 import useApi from "@/composable/api";
+import { User } from "@/composable/auth";
 const people = [
   { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
   { name: 'Courtney Henry', title: 'Designer', email: 'courtney.henry@example.com', role: 'Admin' },
@@ -14,7 +15,7 @@ const people = [
   { name: 'Floyd Miles', title: 'Principal Designer', email: 'floyd.miles@example.com', role: 'Member' },
 ]
 export default function UserTable(){
-    const [items,setItems] = useState([])
+    const [data,setData] = useState()
     const api = useApi()
 const headers = [
     {title: 'Name', key: 'firstName' },
@@ -22,9 +23,24 @@ const headers = [
     {title: 'Email', key: 'email' },
     {title: 'Roles', key: 'role' },
 ]
-    useEffect(()=>{
-        api('/users','GET').then((data)=>setItems(data))
-    },[])
+const [paginationOption, setPaginationOption] = useState({
+  page: 1,
+  limit: 2
+})
+
+const fetchUsers = useCallback(()=>{
+        api('/users','GET',{
+          config: {
+            params: paginationOption
+          }
+        }).then((response)=>setData(response))
+    },[paginationOption])
+
+    useEffect(fetchUsers,[paginationOption])
+
+    const pagiantionCallBack = useCallback(()=>{
+      return Pagination({paginationOption, setPaginationOption, response: data })
+    },[data, paginationOption ])
     return (
         <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -39,7 +55,11 @@ const headers = [
         </div>
       </div>
       <div className="mt-8">
-        <SimpleTable headers={headers} items={items} PaginationElement={Pagination} />
+        <SimpleTable
+         headers={headers}
+         items={data?.items}
+         PaginationElement={pagiantionCallBack}
+         action={(item: User)=><UserCreateDialog selectedId={item.id} reload={fetchUsers} />} />
         </div></div>
     
     )
