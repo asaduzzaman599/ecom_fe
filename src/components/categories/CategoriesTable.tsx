@@ -1,11 +1,12 @@
 'use client'
 
+import { Category, useCategories } from "@/composable/categories";
 import SimpleTable from "../tailwindcss/SimpleTable";
-import TypeCreateUpdateDialog from "./TypeCreateUpdateDialog";
-import { Type, useTypes } from "@/composable/types";
+import CategoryCreateUpdateDialog from "./CategoryCreateUpdateDialog";
+import { Type } from "@/composable/types";
 
-export default function TypesTable(){
-    const {headers, data, paginationCallBack, fetchTypesCallback}= useTypes()
+export default function CategoriesTable(){
+    const {headers, data, paginationCallback, fetchCategoriesCallback}= useCategories()
     return (
         <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -16,15 +17,15 @@ export default function TypesTable(){
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <TypeCreateUpdateDialog reload={fetchTypesCallback} />
+            <CategoryCreateUpdateDialog reload={fetchCategoriesCallback} />
         </div>
       </div>
       <div className="mt-8">
-        <SimpleTable<Type>
+        <SimpleTable<Category>
          headers={headers}
          items={data?.items}
-         PaginationElement={paginationCallBack}
-         action={(item: Type)=><TypeCreateUpdateDialog selectedId={item.id} reload={fetchTypesCallback} />} />
+         PaginationElement={paginationCallback}
+         action={(item: Type)=><CategoryCreateUpdateDialog selectedId={item.id} reload={paginationCallback} />} />
         </div></div>
     
     )

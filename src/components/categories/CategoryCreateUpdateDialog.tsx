@@ -3,19 +3,20 @@ import SimpleDialog from "../tailwindcss/Dialog";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useAPi from "@/composable/api";
-import { useType } from "@/composable/types";
+import { useCategory } from "@/composable/categories";
 
 type Inputs = {
   title: string;
+  typeId: string;
 }
 
 type Props = {
   selectedId?: string
   reload: () => void
 }
-export default function TypeCreateDialog({ selectedId, reload }: Props) {
+export default function CategoryCreateDialog({ selectedId, reload }: Props) {
   const [open, setOpen] = useState(false)
-  const {fetchType} = useType()
+  const { fetchCategory } = useCategory()
   const api = useAPi()
   const {
       register,
@@ -28,8 +29,9 @@ export default function TypeCreateDialog({ selectedId, reload }: Props) {
 
     useEffect(()=>{
       if(selectedId && open)
-        fetchType(selectedId).then(data=>{
+        fetchCategory(selectedId).then(data=>{
       setValue('title', data.title)
+      setValue('typeId', data.type.id)
   })
     },[open])
 
@@ -37,15 +39,16 @@ export default function TypeCreateDialog({ selectedId, reload }: Props) {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try{
       const inputData = {
-        'title': data.title
+        'title': data.title,
+        'typeId': data.typeId
       }
       if(!selectedId)
-        await api('/auth/register-admin','POST', {data: inputData})
+        await api('/categories','POST', {data: inputData})
       else
-        await api(`/users/${selectedId}`,'PATCH', {data: inputData})
+        await api(`/categories/${selectedId}`,'PATCH', {data: inputData})
 
       reload()
-      toast.success('Signup successfully!')
+      toast.success(`${selectedId ? 'Updated' : 'Created'} successfully!`)
       setTimeout(()=>{
       reset()
       setOpen(false)
@@ -60,7 +63,7 @@ export default function TypeCreateDialog({ selectedId, reload }: Props) {
     type="button"
     className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
   >
-    Add Title
+    Add Category
   </button>
   : <button 
     onClick={() => setOpen(true)}
