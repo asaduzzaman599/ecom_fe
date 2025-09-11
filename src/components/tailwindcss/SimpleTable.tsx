@@ -11,9 +11,9 @@ interface DataTableHeaderType {
 
 interface Props<T> {
     headers: DataTableHeaderType[]
-    items: T[]
+    items?: T[]
     PaginationElement?: ()=> React.ReactNode
-    action?: <T>(item: T)=> React.ReactNode
+    action?: (item: T)=> React.ReactNode
 }
 export default function SimpleTable<T>({headers, items, PaginationElement, action }: Props<T>) {
   return (

@@ -1,3 +1,4 @@
+import { PaginationProps } from "@/composable/pagination"
 import React from "react"
 
 const items = [
@@ -5,25 +6,9 @@ const items = [
   { id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
   { id: 3, title: 'User Interface Designer', department: 'Design', type: 'Full-time', location: 'Remote' },
 ]
-type PaginationOption = {
-  page: number
-  limit: number
-}
 
-type PaginatedResponse  = {
-  hasNext: boolean
-  hasPrevious: boolean
-  totalPage: number
-  count: number
-} & PaginationOption
 
-type Props = {
-  response: PaginatedResponse
-  paginationOption: PaginationOption
-  setPaginationOption: React.Dispatch<React.SetStateAction<PaginationOption>>
-}
-
-export default function Pagination(props: Props) {
+export default function Pagination<T>(props: PaginationProps<T>) {
   return (
     <nav
       aria-label="Pagination"
