@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
+import {useCallback, useEffect, useState } from "react"
 import useApi from "./api"
 import { PaginatedResponse, usePagination } from "./pagination"
 import { Type } from "./types"
+import { PAGINATION_INIT_OPTIONS } from "@/utils/constant"
 
 export type Category = {
     id: string
@@ -18,10 +19,8 @@ const headers = [
     {title: 'Type', key: 'type.title' },
     {title: 'isActive', key: 'isActive' },
 ]
-const [paginationOption, setPaginationOption] = useState({
-  page: 1,
-  limit: 2
-})
+
+const [paginationOption, setPaginationOption] = useState(PAGINATION_INIT_OPTIONS)
 
 const fetchCategoriesCallback= useCallback(()=>{
         return api<PaginatedResponse<Category>>('/categories','GET',{
@@ -34,17 +33,14 @@ const fetchCategoriesCallback= useCallback(()=>{
 
     useEffect(()=>{
         fetchCategoriesCallback().then((response)=>setData(response))
-    },[paginationOption])
-
-    const paginationCallback = useCallback(()=>{
-      return pagination({paginationOption, setPaginationOption, response: data })
-    },[data, paginationOption])
+    },[fetchCategoriesCallback])
 
     return {
         headers,
         data,
-        paginationCallback,
-        fetchCategoriesCallback
+        fetchCategoriesCallback,
+        paginationOption,
+        setPaginationOption
     }
 }
 
@@ -53,7 +49,7 @@ export const useCategory = () =>{
 
     const fetchCategory = useCallback((id: string)=>{
         return api<Category>(`/categories/${id}`,'GET')
-    },[])
+    },[api])
     
     return {
         fetchCategory

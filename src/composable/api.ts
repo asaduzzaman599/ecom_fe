@@ -45,7 +45,7 @@ export default function useApi<T>() {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const execute = <T>(uri: string, method: 'POST' | 'GET' | 'PATCH', options?: {data?: any, config?: AxiosRequestConfig<unknown>}): Promise<T> =>{
+  const execute = async <T>(uri: string, method: 'POST' | 'GET' | 'PATCH', options?: {data?: any, config?: AxiosRequestConfig<unknown>}): Promise<T> =>{
     
     if(method === 'POST'){
       return axiosInstance?.post(uri, options?.data, options?.config ) as unknown as Promise<T>

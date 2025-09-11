@@ -6,8 +6,8 @@ type PaginationOption = {
 }
 
 export type PaginatedResponse<T>  = {
-  hasNext: boolean
-  hasPrevious: boolean
+  hasNextPage: boolean
+  hasPreviousPage: boolean
   totalPage: number
   count: number
   items: T[]
@@ -19,4 +19,4 @@ export type PaginationProps <T> = {
   setPaginationOption: React.Dispatch<React.SetStateAction<PaginationOption>>
 }
 
-export const usePagination = <T>() => (props: PaginationProps<T>)=>Pagination(props)
+export const usePagination = <T>() => Pagination

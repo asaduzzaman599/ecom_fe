@@ -1,11 +1,14 @@
 'use client'
 
+import { useEffect } from "react";
+import Pagination from "../tailwindcss/Pagination";
 import SimpleTable from "../tailwindcss/SimpleTable";
 import TypeCreateUpdateDialog from "./TypeCreateUpdateDialog";
 import { Type, useTypes } from "@/composable/types";
 
 export default function TypesTable(){
-    const {headers, data, paginationCallBack, fetchTypesCallback}= useTypes()
+    const {headers, data, paginationOption, setPaginationOption, fetchTypesCallback }= useTypes()
+
     return (
         <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -23,7 +26,7 @@ export default function TypesTable(){
         <SimpleTable<Type>
          headers={headers}
          items={data?.items}
-         PaginationElement={paginationCallBack}
+         PaginationElement={<Pagination paginationOption={paginationOption} response={data} setPaginationOption={setPaginationOption}  />}
          action={(item: Type)=><TypeCreateUpdateDialog selectedId={item.id} reload={fetchTypesCallback} />} />
         </div></div>
     

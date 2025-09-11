@@ -40,12 +40,12 @@ export default function TypeCreateDialog({ selectedId, reload }: Props) {
         'title': data.title
       }
       if(!selectedId)
-        await api('/auth/register-admin','POST', {data: inputData})
+        await api('/types','POST', {data: inputData})
       else
-        await api(`/users/${selectedId}`,'PATCH', {data: inputData})
+        await api(`/types/${selectedId}`,'PATCH', { data: inputData })
 
       reload()
-      toast.success('Signup successfully!')
+      toast.success(`Type ${selectedId ? 'updated' : 'created'}  successfully!`)
       setTimeout(()=>{
       reset()
       setOpen(false)

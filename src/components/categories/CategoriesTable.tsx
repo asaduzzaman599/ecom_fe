@@ -4,9 +4,10 @@ import { Category, useCategories } from "@/composable/categories";
 import SimpleTable from "../tailwindcss/SimpleTable";
 import CategoryCreateUpdateDialog from "./CategoryCreateUpdateDialog";
 import { Type } from "@/composable/types";
+import Pagination from "../tailwindcss/Pagination";
 
 export default function CategoriesTable(){
-    const {headers, data, paginationCallback, fetchCategoriesCallback}= useCategories()
+    const {headers, data, paginationOption, setPaginationOption, fetchCategoriesCallback}= useCategories()
     return (
         <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -24,8 +25,9 @@ export default function CategoriesTable(){
         <SimpleTable<Category>
          headers={headers}
          items={data?.items}
-         PaginationElement={paginationCallback}
-         action={(item: Type)=><CategoryCreateUpdateDialog selectedId={item.id} reload={paginationCallback} />} />
+        PaginationElement={<Pagination paginationOption={paginationOption} response={data} setPaginationOption={setPaginationOption}  />}
+                 
+         action={(item: Type)=><CategoryCreateUpdateDialog selectedId={item.id} reload={fetchCategoriesCallback} />} />
         </div></div>
     
     )

@@ -9,6 +9,8 @@ export type User = {
   id: string,
   firstName: string,
   role: 'Admin' | 'SuperAdmin'
+  email?: string
+  phone: string
 }
 
 export interface AuthResponse {
@@ -34,7 +36,7 @@ export function useAuth(){
           router.push('/')
         }
       }catch(err){
-          toast.error(err.message)
+          toast.error((err as { message: string }).message)
       }
     }
 

@@ -1,7 +1,7 @@
-import Pagination from "@/components/tailwindcss/Pagination"
-import { use, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useApi from "./api"
-import { PaginatedResponse, usePagination } from "./pagination"
+import { PaginatedResponse } from "./pagination"
+import { PAGINATION_INIT_OPTIONS } from "@/utils/constant"
 
 export type Type = {
     id: string
@@ -11,38 +11,31 @@ export type Type = {
 export const useTypes = () => {
     const [data,setData] = useState<PaginatedResponse<Type>>()
     const api = useApi()
-    const pagination = usePagination()
 const headers = [
     {title: 'Title', key: 'title' },
-    {title: 'isActive', key: 'isActive' },
+    {title: 'Active Status', key: 'isActive' },
 ]
-const [paginationOption, setPaginationOption] = useState({
-  page: 1,
-  limit: 2
-})
+const [paginationOption, setPaginationOption] = useState(PAGINATION_INIT_OPTIONS)
 
 const fetchTypesCallback = useCallback(()=>{
         return api<PaginatedResponse<Type>>('/types','GET',{
           config: {
             params: paginationOption
           }
-        })
+        }).then((response: PaginatedResponse<Type>)=>{setData(response)})
     },[paginationOption])
     
 
     useEffect(()=>{
-        fetchTypesCallback().then((response: PaginatedResponse<Type>)=>setData(response))
-    },[paginationOption])
-
-    const paginationCallBack = useCallback(()=>{
-      return pagination({paginationOption, setPaginationOption, response: data })
-    },[data, paginationOption])
+        fetchTypesCallback()
+    },[])
 
     return {
         headers,
         data,
-        paginationCallBack,
-        fetchTypesCallback
+        fetchTypesCallback,
+        paginationOption,
+        setPaginationOption
     }
 }
 

@@ -10,7 +10,6 @@ export default function UserProtectedRoute({ children }: { children: React.React
     const auth = useSelector((state: RootState) => state.auth)
     const [loading, setLoading] = useState(true)
     useEffect(()=>{
-        console.log(auth.loading , auth.user)
         if(!auth.loading && auth.user){
             
             setLoading(auth.loading)

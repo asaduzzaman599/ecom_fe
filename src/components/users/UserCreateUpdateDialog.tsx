@@ -3,6 +3,7 @@ import SimpleDialog from "../tailwindcss/Dialog";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useAPi from "@/composable/api";
+import { User } from "@/composable/auth";
 
 type Inputs = {
   firstName: string;
@@ -31,7 +32,7 @@ export default function UserCreateDialog({ selectedId, reload }: Props) {
 
     useEffect(()=>{
       if(selectedId && open)
-        api(`/users/${selectedId}`, 'GET').then(data=>{
+        api<User>(`/users/${selectedId}`, 'GET').then(data=>{
       setValue('firstName',data.firstName)
     setValue('email',data.email)
   setValue("phone",data.phone)
