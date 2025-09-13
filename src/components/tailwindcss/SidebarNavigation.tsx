@@ -32,9 +32,9 @@ import Link from 'next/link'
 
 const navigation = [
   { name: 'Users', href: '/users', icon: UsersIcon, current: true },
-  { name: 'Team', href: '#', icon: HomeIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+  { name: 'Types', href: '/types', icon: HomeIcon, current: false },
+  { name: 'Categories', href: '/categories', icon: FolderIcon, current: false },
+  { name: 'Products', href: '/products', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
 ]

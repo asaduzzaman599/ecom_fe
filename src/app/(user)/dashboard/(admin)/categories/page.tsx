@@ -1,11 +1,11 @@
 
-import TypeTable from "@/components/types/TypeTable";
+import CategoriesTable from "@/components/categories/CategoriesTable";
 
 export default function UsersPage(){
     return (
         <div className="px-4">
             
-        <TypeTable />
+        <CategoriesTable />
         </div>
     )
 }

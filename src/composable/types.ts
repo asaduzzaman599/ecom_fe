@@ -28,7 +28,7 @@ const fetchTypesCallback = useCallback(()=>{
 
     useEffect(()=>{
         fetchTypesCallback()
-    },[])
+    },[fetchTypesCallback])
 
     return {
         headers,
@@ -48,5 +48,17 @@ export const useType = () =>{
     
     return {
         fetchType
+    }
+}
+
+export const useAllType = () =>{
+    const api = useApi()
+
+    const fetchAllType = useCallback(()=>{
+        return api<Type[]>(`/types/all`,'GET')
+    },[api])
+    
+    return {
+        fetchAllType
     }
 }

@@ -3,27 +3,28 @@ import useApi from "./api"
 import { PaginatedResponse, usePagination } from "./pagination"
 import { Type } from "./types"
 import { PAGINATION_INIT_OPTIONS } from "@/utils/constant"
+import { Category } from "./categories"
 
-export type Category = {
+export type Product = {
     id: string
     title: string
     type: Type
+    category: Category
     isActive: boolean
 }
-export const useCategories = () => {
-    const [data,setData] = useState<PaginatedResponse<Category>>()
+export const useProducts = () => {
+    const [data,setData] = useState<PaginatedResponse<Product>>()
     const api = useApi()
-    const pagination = usePagination()
 const headers = [
     {title: 'Title', key: 'title' },
-    {title: 'Type', key: 'type.title' },
+    {title: 'Type', key: 'type' },
     {title: 'isActive', key: 'isActive' },
 ]
 
 const [paginationOption, setPaginationOption] = useState(PAGINATION_INIT_OPTIONS)
 
-const fetchCategoriesCallback= useCallback(()=>{
-        return api<PaginatedResponse<Category>>('/categories','GET',{
+const fetchProductsCallback= useCallback(()=>{
+        return api<PaginatedResponse<Product>>('/goods','GET',{
           config: {
             params: paginationOption
           }
@@ -32,40 +33,26 @@ const fetchCategoriesCallback= useCallback(()=>{
     
 
     useEffect(()=>{
-        fetchCategoriesCallback()
-    },[fetchCategoriesCallback])
+        fetchProductsCallback()
+    },[fetchProductsCallback])
 
     return {
         headers,
         data,
-        fetchCategoriesCallback,
+        fetchProductsCallback,
         paginationOption,
         setPaginationOption
     }
 }
 
-export const useCategory = () =>{
+export const useProduct = () =>{
     const api = useApi()
 
-    const fetchCategory = useCallback((id: string)=>{
-        return api<Category>(`/categories/${id}`,'GET')
+    const fetchProduct = useCallback((id: string)=>{
+        return api<Product>(`/goods/${id}`,'GET')
     },[api])
     
     return {
-        fetchCategory
-    }
-}
-
-
-
-export const useAllCategory = () =>{
-    const api = useApi()
-
-    const fetchAllCategory = useCallback(()=>{
-        return api<Type[]>(`/categories/all`,'GET')
-    },[api])
-    
-    return {
-        fetchAllCategory
+        fetchProduct
     }
 }
