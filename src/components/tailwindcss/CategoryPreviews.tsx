@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 
 export default function CategoryPreviews() {
@@ -14,7 +15,7 @@ export default function CategoryPreviews() {
 
         <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
           <div className="group relative aspect-[2/1] overflow-hidden rounded-lg sm:row-span-2 sm:aspect-square">
-            <img
+            <Image
               alt="Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee."
               src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-featured-category.jpg"
               className="absolute size-full object-cover group-hover:opacity-75"
@@ -38,7 +39,7 @@ export default function CategoryPreviews() {
             </div>
           </div>
           <div className="group relative aspect-[2/1] overflow-hidden rounded-lg sm:aspect-auto">
-            <img
+            <Image
               alt="Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters."
               src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-category-01.jpg"
               className="absolute size-full object-cover group-hover:opacity-75"
@@ -62,7 +63,7 @@ export default function CategoryPreviews() {
             </div>
           </div>
           <div className="group relative aspect-[2/1] overflow-hidden rounded-lg sm:aspect-auto">
-            <img
+            <Image
               alt="Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk."
               src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-category-02.jpg"
               className="absolute size-full object-cover group-hover:opacity-75"

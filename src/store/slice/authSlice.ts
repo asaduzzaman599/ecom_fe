@@ -18,7 +18,8 @@ export const fetchCurrentUser = createAsyncThunk(
       }
     } catch (err) {
       localStorage.removeItem(Local_STORAGE_TOKEN_KEY)
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch user");
+      const error = err as { response: { data: { message: string } } };
+      return rejectWithValue(error?.response?.data?.message || "Failed to fetch user");
     }
   }
 );

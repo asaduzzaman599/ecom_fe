@@ -10,6 +10,7 @@ import {
 } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 
 const product = {
   name: 'Zip Tote Basket',
@@ -100,7 +101,7 @@ const product = {
   ],
 }
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
@@ -121,7 +122,7 @@ export default function ProductDetails() {
                   >
                     <span className="sr-only">{image.name}</span>
                     <span className="absolute inset-0 overflow-hidden rounded-md">
-                      <img alt="" src={image.src} className="size-full object-cover" />
+                      <Image alt="" src={image.src} className="size-full object-cover" />
                     </span>
                     <span
                       aria-hidden="true"
@@ -135,7 +136,7 @@ export default function ProductDetails() {
             <TabPanels>
               {product.images.map((image) => (
                 <TabPanel key={image.id}>
-                  <img alt={image.alt} src={image.src} className="aspect-square w-full object-cover sm:rounded-lg" />
+                  <Image alt={image.alt} src={image.src} className="aspect-square w-full object-cover sm:rounded-lg" />
                 </TabPanel>
               ))}
             </TabPanels>

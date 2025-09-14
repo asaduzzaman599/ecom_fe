@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const products = [
   {
     id: 1,
@@ -34,7 +36,7 @@ export default function OrderSummaries() {
       */}
       <main className="relative lg:min-h-full">
         <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
-          <img
+          <Image
             alt="TODO"
             src="https://tailwindcss.com/plus-assets/img/ecommerce-images/confirmation-page-06-hero.jpg"
             className="size-full object-cover"
@@ -62,7 +64,7 @@ export default function OrderSummaries() {
               >
                 {products.map((product) => (
                   <li key={product.id} className="flex space-x-6 py-6">
-                    <img
+                    <Image
                       alt={product.imageAlt}
                       src={product.imageSrc}
                       className="size-24 flex-none rounded-md bg-gray-100 object-cover"

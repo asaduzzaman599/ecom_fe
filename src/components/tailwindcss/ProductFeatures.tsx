@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function ProductFeatures
 () {
   return (
@@ -17,7 +19,7 @@ export default function ProductFeatures
 
           <div className="mt-16 grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
             <div>
-              <img
+              <Image
                 alt="Drawstring top with elastic loop closure and textured interior padding."
                 src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg"
                 className="aspect-[3/2] w-full rounded-lg object-cover"
@@ -28,7 +30,7 @@ export default function ProductFeatures
               </p>
             </div>
             <div>
-              <img
+              <Image
                 alt="Front zipper pouch with included key ring."
                 src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-02.jpg"
                 className="aspect-[3/2] w-full rounded-lg object-cover"

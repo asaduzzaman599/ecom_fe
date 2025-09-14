@@ -23,6 +23,7 @@ import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import DropdownMenu from './DropdownMenu'
+import Image from 'next/image'
 
 const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
 const navigation = {
@@ -293,7 +294,7 @@ export default function StoreNavigation() {
                   <div className="hidden lg:flex lg:items-center">
                     <a href="#">
                       <span className="sr-only">Your Company</span>
-                      <img
+                      <Image
                         alt=""
                         src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                         className="h-8 w-auto"
@@ -445,7 +446,7 @@ export default function StoreNavigation() {
                   {/* Logo (lg-) */}
                   <a href="#" className="lg:hidden">
                     <span className="sr-only">Your Company</span>
-                    <img
+                    <Image
                       alt=""
                       src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                       className="h-8 w-auto"

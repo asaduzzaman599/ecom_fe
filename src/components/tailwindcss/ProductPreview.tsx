@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const products = [
   {
     id: 1,
@@ -41,7 +43,7 @@ export default function Example() {
         <div className="mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 lg:gap-x-8">
           {products.map((product) => (
             <div key={product.id} className="group relative">
-              <img
+              <Image
                 alt={product.imageAlt}
                 src={product.imageSrc}
                 className="h-96 w-full rounded-lg object-cover group-hover:opacity-75 sm:aspect-[2/3] sm:h-auto"

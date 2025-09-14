@@ -24,7 +24,7 @@ export default function ProductsTable(){
       <div className="mt-8">
         <SimpleTable<Product>
          headers={headers}
-         items={data?.items.map(i=>({...i, type: i.type.title }))}
+         items={data?.items}
         PaginationElement={<Pagination paginationOption={paginationOption} response={data} setPaginationOption={setPaginationOption}  />}
                  
          action={(item: Type)=><ProductCreateUpdateDialog selectedId={item.id} reload={fetchProductsCallback} />} />

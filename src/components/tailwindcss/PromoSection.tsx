@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const collections = [
   {
     name: "Women's",
@@ -26,7 +28,7 @@ export default function PromoSection() {
       <div aria-hidden="true" className="absolute inset-0 hidden sm:flex sm:flex-col">
         <div className="relative w-full flex-1 bg-gray-800">
           <div className="absolute inset-0 overflow-hidden">
-            <img
+            <Image
               alt=""
               src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-04-hero-full-width.jpg"
               className="size-full object-cover"
@@ -42,7 +44,7 @@ export default function PromoSection() {
         <div aria-hidden="true" className="absolute inset-0 flex flex-col sm:hidden">
           <div className="relative w-full flex-1 bg-gray-800">
             <div className="absolute inset-0 overflow-hidden">
-              <img
+              <Image
                 alt=""
                 src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-04-hero-full-width.jpg"
                 className="size-full object-cover"
@@ -77,7 +79,7 @@ export default function PromoSection() {
             >
               <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-lg">
                 <div className="absolute inset-0 overflow-hidden group-hover:opacity-75">
-                  <img alt={collection.imageAlt} src={collection.imageSrc} className="size-full object-cover" />
+                  <Image alt={collection.imageAlt} src={collection.imageSrc} className="size-full object-cover" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50" />
               </div>

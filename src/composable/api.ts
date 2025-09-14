@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 let axiosInstance: AxiosInstance | null = null;
 
-export default function useApi<T>() {
+export default function useApi() {
   if (!axiosInstance) {
     axiosInstance = axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form"
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 type Inputs = {
   firstName: string;
@@ -56,7 +57,7 @@ export default function SignupForm() {
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <Link href="/">
-          <img
+          <Image
             alt="Your Company"
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"

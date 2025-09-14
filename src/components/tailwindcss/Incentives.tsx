@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const incentives = [
   {
     name: 'Free shipping',
@@ -33,7 +35,7 @@ export default function Incentives() {
                 <div key={incentive.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
                   <div className="sm:shrink-0">
                     <div className="flow-root">
-                      <img alt="" src={incentive.imageSrc} className="mx-auto size-16" />
+                      <Image alt="" src={incentive.imageSrc} className="mx-auto size-16" />
                     </div>
                   </div>
                   <div className="mt-3 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">

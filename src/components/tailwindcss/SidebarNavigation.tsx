@@ -29,6 +29,7 @@ import { RootState } from '@/store/store'
 import { logout } from '@/store/slice/authSlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'Users', href: '/users', icon: UsersIcon, current: true },
@@ -44,7 +45,7 @@ const teams = [
   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
@@ -103,7 +104,7 @@ const userNavigation = useMemo(()=>{
               {/* Sidebar component, swap this element with another sidebar if you like */}
               <div className="relative flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                 <div className="relative flex h-16 shrink-0 items-center">
-                  <img
+                  <Image
                     alt="Your Company"
                     src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                     className="h-8 w-auto"
@@ -191,7 +192,7 @@ const userNavigation = useMemo(()=>{
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center">
-              <img
+              <Image
                 alt="Your Company"
                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                 className="h-8 w-auto"
@@ -313,7 +314,7 @@ const userNavigation = useMemo(()=>{
                   <MenuButton className="relative flex items-center">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    <Image
                       alt=""
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                       className="size-8 rounded-full bg-gray-50 outline outline-1 -outline-offset-1 outline-black/5"

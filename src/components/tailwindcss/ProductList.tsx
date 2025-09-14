@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const products = [
   {
     id: 1,
@@ -48,7 +50,7 @@ export default function ProductList() {
             <div key={product.id}>
               <div className="relative">
                 <div className="relative h-72 w-full overflow-hidden rounded-lg">
-                  <img alt={product.imageAlt} src={product.imageSrc} className="size-full object-cover" />
+                  <Image alt={product.imageAlt} src={product.imageSrc} className="size-full object-cover" />
                 </div>
                 <div className="relative mt-4">
                   <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
