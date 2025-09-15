@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import SimpleDialog from "../tailwindcss/Dialog";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useAPi from "@/composable/api";
-import { useProduct } from "@/composable/products";
+import { ProductInputs, StockInputs, useProduct } from "@/composable/products";
 import InputSelect, { SelectOptions } from "../tailwindcss/InputSelect";
 import { useAllType } from "@/composable/types";
 import { useAllCategory } from "@/composable/categories";
 import { FileUpload } from "../tailwindcss/FileUpload";
+import ProductStockCreateUpdateCard from "./ProductStockCreateUpdateCard";
+import { PlusCircleIcon } from '@heroicons/react/20/solid'
 
-type Inputs = {
-  title: string;
-  typeId: string;
-  categoryId: string
-}
 
 type Props = {
   selectedId?: string
@@ -26,20 +23,25 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
   const {fetchAllCategory} = useAllCategory()
   const api = useAPi()
   const {
+      control,
       register,
       handleSubmit,
       watch,
       formState: { errors },
       setValue,
       reset
-    } = useForm<Inputs>();
+    } = useForm<ProductInputs>();
+     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: "stocks", // unique name for your Field Array
+  });
     const [types, setTypes] = useState<SelectOptions>([]) 
     const [categories, setCategories] = useState<SelectOptions>([]) 
 
     useEffect(()=>{
       if(open){
-       fetchAllType().then(data=>setTypes(data.map(({id, title})=>({id, name:  title }))))
-       fetchAllCategory().then(data=>setCategories(data.map(({id, title})=>({id, name:  title }))))
+       fetchAllType().then(data=>setTypes(data.map(({id, title})=>({value: id, name:  title }))))
+       fetchAllCategory().then(data=>setCategories(data.map(({id, title})=>({value: id, name:  title }))))
       if(selectedId) {
         fetchProduct(selectedId).then(data=>{
         setValue('title', data.title)
@@ -48,23 +50,24 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
     },[open])
 
     
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ProductInputs> = async (data) => {
     try{
       const inputData = {
         'title': data.title,
         'typeId': data.typeId
       }
-      if(!selectedId)
-        await api('/products','POST', {data: inputData})
-      else
-        await api(`/products/${selectedId}`,'PATCH', {data: inputData})
+      // if(!selectedId)
+      //   await api('/products','POST', {data: inputData})
+      // else
+      //   await api(`/products/${selectedId}`,'PATCH', {data: inputData})
 
       reload()
       toast.success(`${selectedId ? 'Updated' : 'Created'} successfully!`)
-      setTimeout(()=>{
-      reset()
-      setOpen(false)
-    },1000)
+      console.log({data})
+      //   setTimeout(()=>{
+    //   reset()
+    //   setOpen(false)
+    // },1000)
     }catch(err){
       console.log(err)
     }
@@ -121,6 +124,17 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
                   />
                 </div>
                
+              </div>
+              <div className="mt-2">
+                <div className="flex justify-between ">
+                  <span  className="text-base font-semibold text-gray-900">Stock</span>
+                  <button onClick={()=>append({color: '#fff', size: 'NONE', quantity: 0, description: ''})}
+                      className="block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >  <PlusCircleIcon aria-hidden="true" className="size-5 text-gray-500" /></button>
+                </div>
+              {
+                fields.map((field, idx)=><ProductStockCreateUpdateCard key={idx} control={control} register={register} index={idx} />)
+              }
               </div>
                           
     

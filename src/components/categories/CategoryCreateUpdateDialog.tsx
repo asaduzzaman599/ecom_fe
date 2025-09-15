@@ -33,7 +33,7 @@ export default function CategoryCreateDialog({ selectedId, reload }: Props) {
 
     useEffect(()=>{
       if(open){
-       fetchAllType().then(data=>setTypes(data.map(({id, title})=>({id, name:  title }))))
+       fetchAllType().then(data=>setTypes(data.map(({id, title})=>({value: id, name:  title }))))
       if(selectedId) {
         fetchCategory(selectedId).then(data=>{
         setValue('title', data.title)

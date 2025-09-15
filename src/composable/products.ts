@@ -5,6 +5,18 @@ import { Type } from "./types"
 import { PAGINATION_INIT_OPTIONS } from "@/utils/constant"
 import { Category } from "./categories"
 
+export type StockInputs = {
+    quantity: number;
+    size: string;
+    color: string;
+    description: string;
+}
+export type ProductInputs = {
+  title: string;
+  typeId: string;
+  categoryId: string
+  stocks: StockInputs[]
+}
 export type Product = {
     id: string
     title: string
