@@ -2,7 +2,6 @@
 
 import { Product, useProducts } from "@/composable/products";
 import SimpleTable from "../tailwindcss/SimpleTable";
-import ProductCreateUpdateDialog from "./ProductCreateUpdateDialog";
 import { Type } from "@/composable/types";
 import Pagination from "../tailwindcss/Pagination";
 
@@ -18,16 +17,14 @@ export default function ProductsTable(){
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <ProductCreateUpdateDialog reload={fetchProductsCallback} />
-        </div>
+            </div>
       </div>
       <div className="mt-8">
         <SimpleTable<Product>
          headers={headers}
-         items={data?.items.map(i=>({...i, type: i.type.title }))}
+         items={data?.items?.map(i=>({...i, type: i.type.title }))}
         PaginationElement={<Pagination paginationOption={paginationOption} response={data} setPaginationOption={setPaginationOption}  />}
-                 
-         action={(item: Type)=><ProductCreateUpdateDialog selectedId={item.id} reload={fetchProductsCallback} />} />
+                 />
         </div></div>
     
     )

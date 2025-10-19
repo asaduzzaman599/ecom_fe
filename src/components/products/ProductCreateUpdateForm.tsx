@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import SimpleDialog from "../tailwindcss/Dialog";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -14,9 +16,9 @@ import { PlusCircleIcon } from '@heroicons/react/20/solid'
 
 type Props = {
   selectedId?: string
-  reload: () => void
+  reload?: () => void
 }
-export default function ProductCreateDialog({ selectedId, reload }: Props) {
+export default function ProductCreateUpdateForm({ selectedId, reload }: Props) {
   const [open, setOpen] = useState(false)
   const { fetchProduct } = useProduct()
   const {fetchAllType} = useAllType()
@@ -39,29 +41,30 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
     const [categories, setCategories] = useState<SelectOptions>([]) 
 
     useEffect(()=>{
-      if(open){
        fetchAllType().then(data=>setTypes(data.map(({id, title})=>({value: id, name:  title }))))
        fetchAllCategory().then(data=>setCategories(data.map(({id, title})=>({value: id, name:  title }))))
       if(selectedId) {
         fetchProduct(selectedId).then(data=>{
         setValue('title', data.title)
         setValue('typeId', data.type.id)
-  })}}
-    },[open])
+  })}
+    },[])
 
     
   const onSubmit: SubmitHandler<ProductInputs> = async (data) => {
     try{
+      console.log(data)
       const inputData = {
         'title': data.title,
         'typeId': data.typeId
       }
+      await api('goods', 'POST', {data: {...data, price: +data.price}})
       // if(!selectedId)
       //   await api('/products','POST', {data: inputData})
       // else
       //   await api(`/products/${selectedId}`,'PATCH', {data: inputData})
 
-      reload()
+      // reload()
       toast.success(`${selectedId ? 'Updated' : 'Created'} successfully!`)
       console.log({data})
       //   setTimeout(()=>{
@@ -73,25 +76,10 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
     }
   }
 
-  return (<SimpleDialog activator={() => (!selectedId ? <button
-    onClick={() => setOpen(true)}
-    type="button"
-    className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  return (<div 
   >
-    Add Product
-  </button>
-  : <button 
-    onClick={() => setOpen(true)}
-     className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
-                          Edit
-                        </button>)}
-    open={open}
-    setOpen={setOpen}
-    title='Create Admin'
-  >
-     <form onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                
+     <form onSubmit={handleSubmit(onSubmit)} >
+              <div className="grid md:grid-cols-2 gap-5 bg-white p-5 rounded shadow">
                 <div className="mt-2">
                   <InputSelect
                     id="type"
@@ -111,9 +99,7 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
-                <div className="mt-2">
-                <FileUpload />
-                </div>
+              
                 
                 <div className="mt-2">
                   <input
@@ -123,27 +109,48 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
+                <div className="mt-2">
+                  <input
+                    id="description"
+                   {...register("description", { required: true })}
+                    placeholder="Enter Description"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  />
+                </div>
+                
+                <div className="mt-2">
+                  <input
+                    id="price"
+                   {...register("price", { required: true, valueAsNumber: true })}
+                    placeholder="Enter Price"
+                    type="number"
+                    min={1}
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  />
+                </div>
                
               </div>
-              <div className="mt-2">
+              <div className="mt-4">
                 <div className="flex justify-between ">
                   <span  className="text-base font-semibold text-gray-900">Stock</span>
-                  <button onClick={()=>append({color: '#fff', size: 'NONE', quantity: 0, description: ''})}
-                      className="block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >  <PlusCircleIcon aria-hidden="true" className="size-5 text-gray-500" /></button>
+                 
                 </div>
-              {
-                fields.map((field, idx)=><ProductStockCreateUpdateCard key={idx} control={control} register={register} index={idx} />)
-              }
+              <div className="grid lg:grid-cols-2 lg:gap-5">
+                {
+                fields.map((field, idx)=><ProductStockCreateUpdateCard key={idx} control={control} register={register} index={idx} setValue={setValue}/>)
+              } 
+              <div>
+                <button onClick={()=>append({color: '#fff', size: 'NONE', quantity: 0, description: '', imageIds: []})}
+                type="button"
+                      className="block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >  <PlusCircleIcon aria-hidden="true" className="size-5 text-gray-500" /></button>
               </div>
-                          
-    
-    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-      <button
+              </div>
+             <button
         type="submit"
         className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
       >
-        {selectedId ? 'Update' : 'Create' }
+        {'Create' }
       </button>
       <button
         type="button"
@@ -152,8 +159,7 @@ export default function ProductCreateDialog({ selectedId, reload }: Props) {
       >
         Cancel
       </button>
-    </div>
-    
+              </div>
             </form>
-  </SimpleDialog>)
+  </div>)
 }

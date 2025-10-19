@@ -10,11 +10,14 @@ export type StockInputs = {
     size: string;
     color: string;
     description: string;
+    imageIds: string[]
 }
 export type ProductInputs = {
   title: string;
+  description: string;
   typeId: string;
   categoryId: string
+  price: number
   stocks: StockInputs[]
 }
 export type Product = {
