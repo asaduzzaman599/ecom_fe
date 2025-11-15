@@ -4,12 +4,13 @@ import useApi from "@/composable/api";
 import { useEffect, useState } from "react";
 
 type Props = {
-  fileId: string;
+  fileId?: string;
+  file?: File
   className?: string; // ✅ allow className
 };
 
-export default function FilePreview({ fileId, className }: Props) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+export default function FilePreview({ fileId, className, file }: Props) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(file ? URL.createObjectURL(file) : null);
   const api = useApi();
 
   useEffect(() => {

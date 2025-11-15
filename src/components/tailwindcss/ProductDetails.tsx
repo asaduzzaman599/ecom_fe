@@ -16,6 +16,7 @@ import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import FilePreview from '../FilePreview'
+import ProductDetailsImage from './ProductDetailsImage'
 
 const product = {
   name: 'Zip Tote Basket',
@@ -142,36 +143,7 @@ export default function ProductDetails() {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
           {/* Image gallery */}
-          <TabGroup className="flex flex-col-reverse">
-            {/* Image selector */}
-            <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-              <TabList className="grid grid-cols-4 gap-6">
-                {stock?.imageIds.map((image) => (
-                  <Tab
-                    key={image}
-                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-500/50 focus:ring-offset-4"
-                  >
-                    <span className="sr-only">{image}</span>
-                    <span className="absolute inset-0 overflow-hidden rounded-md">
-                      <FilePreview fileId={image} className="size-full object-cover" />
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-indigo-500"
-                    />
-                  </Tab>
-                ))}
-              </TabList>
-            </div>
-
-            <TabPanels>
-              {stock?.imageIds.map((image) => (
-                <TabPanel key={image}>
-                  <FilePreview fileId={image} className="aspect-square w-full object-cover sm:rounded-lg" />
-                </TabPanel>
-              ))}
-            </TabPanels>
-          </TabGroup>
+          <ProductDetailsImage stock={stock} />
 
           {/* Product info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
@@ -179,7 +151,7 @@ export default function ProductDetails() {
 
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900">{p?.price}</p>
+              <p className="text-3xl tracking-tight text-gray-900">BDT {p?.price}</p>
             </div>
 
             {/* Reviews */}
