@@ -1,3 +1,5 @@
+'use client'
+import { GoodsWithStocks, StockGroup, useProductStocks } from '@/composable/products'
 import {
   Disclosure,
   DisclosureButton,
@@ -10,6 +12,10 @@ import {
 } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import FilePreview from '../FilePreview'
 
 const product = {
   name: 'Zip Tote Basket',
@@ -105,6 +111,32 @@ function classNames(...classes) {
 }
 
 export default function ProductDetails() {
+  const {ids} = useParams()
+  const [productId] = useState(ids?.[0])
+  const [stockId, setStockId] = useState(ids?.[1])
+  const {fetchProductStocks} = useProductStocks()
+  const [p, setProduct] = useState<GoodsWithStocks>()
+  const [stock, setStock] = useState<StockGroup>()
+
+  useEffect(()=>{
+    if(productId)
+    fetchProductStocks(productId).then(data=>{
+      
+      setProduct(data)})
+  },[productId])
+
+  useEffect(()=>{
+    if(!p) return
+    
+    console.log(p)
+    const exist = p.stocks.find(i=>!!i?.details.find(i=>i.stockId === stockId))
+      if(exist) setStock(exist)
+        if(!exist || !stockId){
+          setStock(p.stocks[0])
+        }
+  }, [p])
+
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -114,14 +146,14 @@ export default function ProductDetails() {
             {/* Image selector */}
             <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
               <TabList className="grid grid-cols-4 gap-6">
-                {product.images.map((image) => (
+                {stock?.imageIds.map((image) => (
                   <Tab
-                    key={image.id}
+                    key={image}
                     className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-500/50 focus:ring-offset-4"
                   >
-                    <span className="sr-only">{image.name}</span>
+                    <span className="sr-only">{image}</span>
                     <span className="absolute inset-0 overflow-hidden rounded-md">
-                      <img alt="" src={image.src} className="size-full object-cover" />
+                      <FilePreview fileId={image} className="size-full object-cover" />
                     </span>
                     <span
                       aria-hidden="true"
@@ -133,9 +165,9 @@ export default function ProductDetails() {
             </div>
 
             <TabPanels>
-              {product.images.map((image) => (
-                <TabPanel key={image.id}>
-                  <img alt={image.alt} src={image.src} className="aspect-square w-full object-cover sm:rounded-lg" />
+              {stock?.imageIds.map((image) => (
+                <TabPanel key={image}>
+                  <FilePreview fileId={image} className="aspect-square w-full object-cover sm:rounded-lg" />
                 </TabPanel>
               ))}
             </TabPanels>
@@ -143,15 +175,15 @@ export default function ProductDetails() {
 
           {/* Product info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{product.name}</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{p?.title}</h1>
 
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+              <p className="text-3xl tracking-tight text-gray-900">{p?.price}</p>
             </div>
 
             {/* Reviews */}
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
                 <div className="flex items-center">
@@ -168,13 +200,13 @@ export default function ProductDetails() {
                 </div>
                 <p className="sr-only">{product.rating} out of 5 stars</p>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-6">
               <h3 className="sr-only">Description</h3>
 
               <div
-                dangerouslySetInnerHTML={{ __html: product.description }}
+                dangerouslySetInnerHTML={{ __html: p?.description }}
                 className="space-y-6 text-base text-gray-700"
               />
             </div>
@@ -186,17 +218,17 @@ export default function ProductDetails() {
 
                 <fieldset aria-label="Choose a color" className="mt-2">
                   <div className="flex items-center gap-x-3">
-                    {product.colors.map((color) => (
-                      <div key={color.id} className="flex rounded-full outline -outline-offset-1 outline-black/10">
+                    {p?.stocks?.map((s) => (
+                      <div key={s.color} className="flex rounded-full outline -outline-offset-1 outline-black/10">
                         <input
-                          defaultValue={color.id}
-                          defaultChecked={color === product.colors[0]}
+                          defaultValue={s.details[0].stockId}
+                          defaultChecked={s.color === p.stocks[0].color}
                           name="color"
                           type="radio"
-                          aria-label={color.name}
+                           style={{ backgroundColor: s?.color, outlineColor: s.color  }}
                           className={classNames(
-                            color.classes,
-                            'size-8 appearance-none rounded-full forced-color-adjust-none checked:outline checked:outline-2 checked:outline-offset-2 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px]',
+                            
+                            `checked:outline-2 checked:outline size-8 appearance-none rounded-full forced-color-adjust-none checked:outline checked:outline-2 checked:outline-offset-2 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px]`,
                           )}
                         />
                       </div>
@@ -215,22 +247,22 @@ export default function ProductDetails() {
 
                   <fieldset aria-label="Choose a size" className="mt-2">
                     <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                      {product.sizes.map((size) => (
+                      {stock?.details.map((size) => (
                         <label
-                          key={size.id}
-                          aria-label={size.name}
+                          key={size.stockId}
+                          aria-label={size.size}
                           className="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-[:checked]:border-indigo-600 has-[:disabled]:border-gray-400 has-[:checked]:bg-indigo-600 has-[:disabled]:bg-gray-200 has-[:disabled]:opacity-25 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-indigo-600"
                         >
                           <input
-                            defaultValue={size.id}
-                            defaultChecked={size === product.sizes[2]}
+                            defaultValue={stockId}
+                            defaultChecked={size.stockId === stockId}
                             name="size"
                             type="radio"
-                            disabled={!size.inStock}
+                            disabled={!size.quantity}
                             className="absolute inset-0 appearance-none focus:outline focus:outline-0 disabled:cursor-not-allowed"
                           />
                           <span className="text-sm font-medium uppercase group-has-[:checked]:text-white">
-                            {size.name}
+                            {size.size}
                           </span>
                         </label>
                       ))}

@@ -22,10 +22,11 @@ export default function ProductsTable(){
       <div className="mt-8">
         <SimpleTable<Product>
          headers={headers}
-         items={data?.items?.map(i=>({...i, type: i.type.title }))}
+         items={data?.items?.map(i=>({...i, type: i?.type?.title }))}
         PaginationElement={<Pagination paginationOption={paginationOption} response={data} setPaginationOption={setPaginationOption}  />}
                  />
-        </div></div>
+        </div>
+        </div>
     
     )
 }

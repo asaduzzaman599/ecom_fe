@@ -11,7 +11,8 @@ import { useAllType } from "@/composable/types";
 import { useAllCategory } from "@/composable/categories";
 import { FileUpload } from "../tailwindcss/FileUpload";
 import ProductStockCreateUpdateCard from "./ProductStockCreateUpdateCard";
-import { PlusCircleIcon } from '@heroicons/react/20/solid'
+import ProductStockPreview from "./ProductStock";
+
 
 
 type Props = {
@@ -31,6 +32,7 @@ export default function ProductCreateUpdateForm({ selectedId, reload }: Props) {
       watch,
       formState: { errors },
       setValue,
+      getValues,
       reset
     } = useForm<ProductInputs>();
      const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
@@ -59,18 +61,10 @@ export default function ProductCreateUpdateForm({ selectedId, reload }: Props) {
         'typeId': data.typeId
       }
       await api('goods', 'POST', {data: {...data, price: +data.price}})
-      // if(!selectedId)
-      //   await api('/products','POST', {data: inputData})
-      // else
-      //   await api(`/products/${selectedId}`,'PATCH', {data: inputData})
-
-      // reload()
+    
       toast.success(`${selectedId ? 'Updated' : 'Created'} successfully!`)
-      console.log({data})
-      //   setTimeout(()=>{
-    //   reset()
-    //   setOpen(false)
-    // },1000)
+
+  
     }catch(err){
       console.log(err)
     }
@@ -133,20 +127,16 @@ export default function ProductCreateUpdateForm({ selectedId, reload }: Props) {
               <div className="mt-4">
                 <div className="flex justify-between ">
                   <span  className="text-base font-semibold text-gray-900">Stock</span>
-                 
+                 <ProductStockCreateUpdateCard control={control} register={register} append={append} setValue={setValue} open={open} setOpen={setOpen}/>
+                  
                 </div>
-              <div className="grid lg:grid-cols-2 lg:gap-5">
-                {
-                fields.map((field, idx)=><ProductStockCreateUpdateCard key={idx} control={control} register={register} index={idx} setValue={setValue}/>)
-              } 
-              <div>
-                <button onClick={()=>append({color: '#fff', size: 'NONE', quantity: 0, description: '', imageIds: []})}
-                type="button"
-                      className="block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >  <PlusCircleIcon aria-hidden="true" className="size-5 text-gray-500" /></button>
+              <div className=" ">
+              {
+                <ProductStockPreview<StockInputs> items={getValues('stocks')} remove={remove} />
+              }
               </div>
-              </div>
-             <button
+             <div className="w-full flex justify-end gap-2 mt-4">
+              <button
         type="submit"
         className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
       >
@@ -154,11 +144,12 @@ export default function ProductCreateUpdateForm({ selectedId, reload }: Props) {
       </button>
       <button
         type="button"
-        onClick={() => setOpen(false)}
+        onClick={() => {}}
         className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
       >
         Cancel
       </button>
+             </div>
               </div>
             </form>
   </div>)

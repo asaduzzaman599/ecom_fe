@@ -10,7 +10,7 @@ type Props<T extends FieldValues> = {
 export default function SizeInput<T extends FieldValues>({ register, name }: Props<T>) {
 const sizeOptions = [{
         name: "2XL",
-        value: '2XL'
+        value: 'XXL'
     },{
         name: "XL",
         value: 'XL'

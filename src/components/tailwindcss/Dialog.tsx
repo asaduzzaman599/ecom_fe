@@ -10,14 +10,21 @@ type Props = {
     children?: React.ReactNode
     footer?: React.ReactNode
     title: string
+    disabledBreakDropClose?: boolean
 }
-export default function SimpleDialog({ open, setOpen, children, activator, title, footer }:Props) {
+export default function SimpleDialog({ open, setOpen, children, activator, title, footer, disabledBreakDropClose }:Props) {
 
+  function handleClose(){
+    if(!disabledBreakDropClose){
+      setOpen(false)
+    }
+  }
   return (
     <div>
           {activator && activator()}
-      <Dialog open={open} onClose={setOpen} className="relative z-60">
+      <Dialog open={open} onClose={handleClose} className="relative z-60">
         <DialogBackdrop
+        
           transition
           className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
         />

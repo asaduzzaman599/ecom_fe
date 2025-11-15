@@ -1,4 +1,4 @@
-export type ApoResponseType = {
+export type ApiResponseType = {
   id: string;
   isActive: boolean;
   createdAt: string;

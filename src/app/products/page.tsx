@@ -1,4 +1,5 @@
 
+import ProductsView from "@/components/products/StockItemsView";
 import CategoryFilters from "@/components/tailwindcss/CategoryFilters";
 import CategoryPreviews from "@/components/tailwindcss/CategoryPreviews";
 import Footer from "@/components/tailwindcss/Footer";
@@ -14,7 +15,7 @@ export default function ProductListPage() {
         <>
         <StoreNavigation />
         <CategoryFilters />
-        <ProductList />
+        <ProductsView />
         <Footer />
         </>
     )
