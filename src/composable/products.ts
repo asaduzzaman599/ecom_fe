@@ -110,6 +110,7 @@ export interface StockGroup {
   color: string | null; // because s.color can be null
   details: StockDetails[];
   imageIds: string[]
+  stockIds: string[]
 }
 
 export interface StockDetails {

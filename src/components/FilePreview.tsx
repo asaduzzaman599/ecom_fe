@@ -10,11 +10,10 @@ type Props = {
 };
 
 export default function FilePreview({ fileId, className, file }: Props) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(file ? URL.createObjectURL(file) : null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>();
   const api = useApi();
 
   useEffect(() => {
-    console.log(fileId)
     if (!fileId) return;
 
     let objectUrl: string;
@@ -33,7 +32,14 @@ export default function FilePreview({ fileId, className, file }: Props) {
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [fileId]);
+useEffect(() => {
+    if (!file) return;
 
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
   if (!previewUrl) return null;
 
   return (

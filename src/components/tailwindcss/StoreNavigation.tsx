@@ -95,6 +95,7 @@ export default function StoreNavigation() {
   
   const [isDrawerOpen, setDrawerOpen] = useState(false)
    const auth = useSelector((state: RootState) => state.auth)
+   const cart = useSelector((state: RootState)=> state.cart)
 
   return (
     <div className="bg-white">
@@ -480,7 +481,7 @@ export default function StoreNavigation() {
                             aria-hidden="true"
                             className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                           />
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.items?.length ?? 0}</span>
                           <span className="sr-only">items in cart, view bag</span>
                         </button>
                         <ShoppingCarts  isDrawerOpen={isDrawerOpen} setDrawerOpen={setDrawerOpen}  />
