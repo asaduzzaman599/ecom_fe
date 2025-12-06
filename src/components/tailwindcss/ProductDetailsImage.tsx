@@ -21,7 +21,7 @@ import useApi from '@/composable/api'
         }}))).then((resolve)=>{
             setFiles(resolve)
         })
-    },[stock, api])
+    },[stock])
 
     function imageSrc(img: File){
       return URL.createObjectURL(img)

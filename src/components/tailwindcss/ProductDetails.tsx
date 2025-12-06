@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import ProductDetailsImage from './ProductDetailsImage'
 import ProductColors from './product-details/ProductColors'
-import { useCart } from '@/store/actions/cartActions'
+import { useCartAction } from '@/store/cart/cartActions'
 import ProductSizes from './product-details/ProductSizes'
 import ProductExtraDetails from './product-details/ProductExtraDetails'
 
@@ -65,14 +65,14 @@ export default function ProductDetails() {
   const [stockId, setStockId] = useState(ids?.[1])
   const {fetchProductStocks} = useProductStocks()
   const [p, setProduct] = useState<GoodsWithStocks>()
-  const {addItemToCart} = useCart()
+  const {addItemToCart} = useCartAction()
 
   useEffect(()=>{
     if(productId)
     fetchProductStocks(productId).then(data=>{
       
       setProduct(data)})
-  },[fetchProductStocks, productId])
+  },[ productId])
 
   const currentStock = useMemo(()=>{
     if(!p || !stockId) return

@@ -1,12 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+export type CartStock = {
+                id: string,
+                size: string
+                color: string
+                description: string
+                quantity: number
+                damageQty: number
+                imageIds: string[]
+                createdAt: string
+                updatedAt: string
+                deleted: boolean
+                isActive: boolean
+                goodId: string
+                good: CartProduct
+            }
+            
+            
+            
+export type CartProduct = {
+                    price: number
+                    title: string
+                    description: string
+                }
 
-export type CartItem = {
+                export type CartItem = {
   stockId: string;
   quantity: number;
+  
 };
+
+export type CartItemDetail = {
+            stock: CartStock
+            total: number
+            quantity: number
+        };
+
+export type CartDetails = {
+  total: number
+    items: CartItemDetail[]
+  }
 
 export type CartState = {
   items: CartItem[];
+  details?: CartDetails
 };
 
 const LOCAL_KEY = "cart-data";
@@ -39,6 +75,11 @@ const cartSlice = createSlice({
     initCart: (state) =>{
       const saved = loadCartFromLocalStorage()
       return saved
+    },
+    setCartDetails: (
+      state, action: PayloadAction<CartDetails>
+    )=>{
+      state.details = action.payload
     },
     addToCart: (
       state,
@@ -90,7 +131,8 @@ export const {
   removeFromCart,
   updateQuantity,
   clearCart,
-  initCart
+  initCart,
+  setCartDetails
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

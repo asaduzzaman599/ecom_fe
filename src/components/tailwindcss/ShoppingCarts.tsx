@@ -6,18 +6,25 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 // import { RootState } from '@/store/store'
 // import { useSelector } from 'react-redux'
 import { ShoppingCartItem } from './shipping-cart/ShoppingCartItem'
-import { useCart } from '@/store/actions/cartActions'
+import { useCartAction } from '@/store/cart/cartActions'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import useApi from '@/composable/api'
+import { StockDetails } from '@/composable/products'
 
 
 export default function ShoppingCarts({isDrawerOpen: open, setDrawerOpen: setOpen}: {isDrawerOpen: boolean, setDrawerOpen: (bool: boolean)=>void }) {
- const {items} = useSelector((state: RootState)=>state.cart)
-  const {setCart} = useCart()
+ const cart = useSelector((state: RootState)=>state.cart)
+  const {setCart, fetchCartDetails } = useCartAction()
 
   useEffect(()=>{
     setCart()
-  },[setCart])
+  },[])
+  const cartDetails = useApi()
+
+  useEffect(()=>{
+    fetchCartDetails()
+  }, [cart.items])
 return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
@@ -52,7 +59,7 @@ return (
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {items.map((item) => (
+                          {cart?.items.map((item) => (
                             <ShoppingCartItem key={item.stockId} stockItem={item} />
                           ))}
                         </ul>
@@ -63,7 +70,7 @@ return (
                   <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>BDT {cart.details?.total}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">

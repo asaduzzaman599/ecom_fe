@@ -26,7 +26,7 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { logout } from '@/store/slice/authSlice'
+import { logout } from '@/store/cart/authSlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 

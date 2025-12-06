@@ -19,6 +19,16 @@
   }
 }
 
+.phone-input input {
+  outline: none !important;
+  @apply w-full py-2 px-3 border-0 focus:ring-0;
+}
+
+.phone-input .PhoneInputCountry {
+  @apply mr-3;
+}
+
+
 body {
   background: var(--background);
   color: var(--foreground);
